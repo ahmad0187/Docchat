@@ -11,7 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import { createStore } from '../lib/store.js';
 import { ask } from '../lib/rag.js';
-import { aiMode } from '../lib/ai.js';
+import { aiMode, embedProvider } from '../lib/ai.js';
 import { seedWorkspace } from '../lib/seed.js';
 
 const workspace = process.argv[2] || 'demo';
@@ -52,7 +52,7 @@ const cell = (s) => String(s).replace(/\|/g, '\\|').replace(/\n+/g, ' ');
 const md = `# DocChat accuracy test
 
 - **Date:** ${new Date().toISOString().slice(0, 10)}
-- **Mode:** ${aiMode === 'mock' ? 'offline mock (NOT the real AI; run again with API keys for the case study)' : `live (${process.env.EMBED_MODEL || 'text-embedding-3-small'} + ${process.env.CLAUDE_MODEL || 'claude-haiku-5-5'})`}
+- **Mode:** ${aiMode === 'mock' ? 'offline mock (NOT the real AI; run again with API keys for the case study)' : `live (${embedProvider} embeddings + ${process.env.CLAUDE_MODEL || 'claude-haiku-5-5'})`}
 - **Documents:** ${[...new Set(questions.filter((q) => q.doc).map((q) => q.doc))].join(', ')}
 
 ## Score: ${passed}/${rows.length} (${Math.round((passed / rows.length) * 100)}%)

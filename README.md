@@ -10,7 +10,7 @@ Built for clinics, law firms, schools and HR teams. Each customer gets a private
 Upload PDF ──► extract text per page (pdf.js) ──► chunks (≤800 tokens, overlap, never cross a page)
                                                    │
                                                    ▼
-                                  OpenAI text-embedding-3-small ──► Supabase Postgres + pgvector
+                       Gemini (free) or OpenAI embeddings ──► Supabase Postgres + pgvector
                                                                     (workspace id, document, page)
 Question ──► embed ──► top 5 chunks in THIS workspace only ──► nothing relevant? → "I don't know" (no AI call)
                                                    │
@@ -25,7 +25,7 @@ Question ──► embed ──► top 5 chunks in THIS workspace only ──►
 | Server | Node.js + Express | Runs as a managed Node.js app on Hostinger Business. No Python hosting needed |
 | PDF text | pdf.js (Mozilla) | Reliable text extraction per page. Running headers/footers are stripped automatically |
 | Vectors, database, login, file storage | Supabase (pgvector + Auth + Storage) | One free service replaces Pinecone + a database + an auth provider |
-| Embeddings | OpenAI `text-embedding-3-small` | Very cheap, good quality |
+| Embeddings | Google `gemini-embedding-001` (free tier) or OpenAI `text-embedding-3-small` | Gemini's free tier costs nothing to start; OpenAI is a very cheap paid option |
 | Answers | Claude Haiku | Fast, cheap, and follows the "only from the sources" rule well |
 | Front end | Plain HTML/JS, no build step | Nothing to compile; upload and run |
 
@@ -64,12 +64,14 @@ Open http://localhost:3000. The demo documents load automatically. Mock mode is 
 5. Optional for demos: **Authentication → Sign In / Providers → Email** → turn off "Confirm email" so new users can sign in immediately.
 
 ### 2. API keys
-- **OpenAI**: platform.openai.com → API keys. Used only for embeddings. Add $5 credit; it lasts a very long time.
+- **Embeddings, free:** aistudio.google.com → sign in with Google → **Get API key** → **Create API key**. No card needed. Put it in `GEMINI_API_KEY`.
+  Note: on Google's free tier, Google may use the text you send to improve its products. That's fine for demos; for a paying client's private documents, turn on billing in Google AI Studio (very cheap) or use OpenAI instead.
+- **Embeddings, paid alternative:** platform.openai.com → API keys → `OPENAI_API_KEY`. Pick one provider and stay with it: switching later means re-uploading the documents.
 - **Anthropic**: the same Claude key as your other projects.
 
 ### 3. Run with the real services
 ```bash
-cp .env.example .env      # fill in the 5 keys
+cp .env.example .env      # fill in the keys
 npm run seed              # loads sample-docs/ into the public demo
 npm start
 ```
@@ -84,7 +86,7 @@ This asks the 20 questions in `eval/questions.json` (16 answerable, 4 that are n
 1. Push this folder to GitHub (the `.gitignore` keeps `node_modules` and `.env` out), or zip it without `node_modules`.
 2. hPanel → **Websites → Add website → Node.js Apps** → import from GitHub (or upload the zip).
 3. Settings: **Node.js 22**, start command `npm start`, entry file `server.js`.
-4. **Environment variables**: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
+4. **Environment variables**: `GEMINI_API_KEY` (or `OPENAI_API_KEY`), `ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
 5. Deploy, then attach a domain or subdomain (for example `docchat.yourdomain.com`). Hostinger provides HTTPS.
 6. Open `/api/health`. It should show `"store":"supabase","ai":"live"`.
 
@@ -104,7 +106,7 @@ This asks the 20 questions in `eval/questions.json` (16 answerable, 4 that are n
 | Supabase free tier | 500 MB database + 1 GB files: thousands of pages per customer |
 | Hostinger | included in your Business plan |
 
-Model prices change, so check openai.com/api/pricing and anthropic.com/pricing before quoting. The `eval` report shows real token use you can multiply out.
+Indexing is free on Gemini's free tier. Model prices change, so check ai.google.dev/pricing, openai.com/api/pricing and anthropic.com/pricing before quoting. The `eval` report shows real token use you can multiply out.
 
 Built-in cost guards: public demo limited to 20 questions per visitor per hour and 500 per day in total; signed-in users to 120 per hour; 10 MB / 300 pages per PDF; 20 documents per workspace. All can be changed with environment variables (see `.env.example`).
 
@@ -131,7 +133,8 @@ Or sell it as a one-off build: their documents, their branding, deployed on thei
 | `/api/health` shows `"store":"memory"` | `SUPABASE_URL` or `SUPABASE_SERVICE_ROLE_KEY` missing in the environment |
 | Upload fails with "save chunks" or "search" error | `supabase/schema.sql` wasn't run, or ran with an error. Run it again |
 | Every answer is "I don't know" | Demo not seeded (`npm run seed`), or `MIN_SIMILARITY` set too high. Try 0.2 |
-| "OPENAI_API_KEY is not set" | Add the key in hPanel environment variables and redeploy |
+| "OPENAI_API_KEY is not set" | You meant to use Gemini: set `GEMINI_API_KEY` (and leave `OPENAI_API_KEY` empty) |
+| "Gemini embeddings: quota" / 429 errors | Free-tier rate limit. Wait a minute and retry, or enable billing in AI Studio |
 | Claude model error | Set `CLAUDE_MODEL` to a model your key has access to |
 | Sign-up email link goes to localhost | Set the Site URL in Supabase (step 1.4) |
 | Sign in button missing | `SUPABASE_ANON_KEY` not set |

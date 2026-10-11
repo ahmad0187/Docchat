@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createStore } from './lib/store.js';
 import { ingestPdf, ask, userError } from './lib/rag.js';
-import { aiMode } from './lib/ai.js';
+import { aiMode, embedProvider } from './lib/ai.js';
 import { seedWorkspace } from './lib/seed.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -57,7 +57,7 @@ function allow(key, limit, windowMs) {
 setInterval(() => { const now = Date.now(); for (const [k, v] of hits) if (!v.some((t) => now - t < 86400000)) hits.delete(k); }, 3600000).unref();
 
 // ---------------------------------------------------------------- API
-app.get('/api/health', (req, res) => res.json({ ok: true, store: store.kind, ai: aiMode }));
+app.get('/api/health', (req, res) => res.json({ ok: true, store: store.kind, ai: aiMode, embeddings: embedProvider }));
 
 app.get('/api/config', (req, res) => res.json({
   authEnabled,
