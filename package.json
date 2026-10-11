@@ -1,0 +1,26 @@
+{
+  "name": "docchat",
+  "version": "1.0.0",
+  "description": "Chat with your PDFs: answers cite the document and page, and say \"I don't know\" instead of guessing.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "AI_MODE=mock node server.js",
+    "seed": "node scripts/seed-demo.js",
+    "eval": "node scripts/eval.js",
+    "eval:mock": "AI_MODE=mock node scripts/eval.js"
+  },
+  "author": "Ahmad Murtaza",
+  "license": "UNLICENSED",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.3",
+    "express": "^4.22.3",
+    "multer": "^2.4.0",
+    "pdfjs-dist": "^4.10.38"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  }
+}

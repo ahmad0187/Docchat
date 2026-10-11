@@ -1,0 +1,22 @@
+[
+  { "q": "What is the late-cancellation fee?", "expect": ["$40"], "doc": "patient-handbook.pdf", "page": 3 },
+  { "q": "How much notice do I need to give if I want to cancel an appointment?", "expect": ["24 hours"], "doc": "patient-handbook.pdf", "page": 3 },
+  { "q": "What time does the clinic close on Thursdays?", "expect": ["7:00|7 PM|7pm|7 p.m."], "doc": "patient-handbook.pdf", "page": 1 },
+  { "q": "Is the clinic open on Saturdays?", "expect": ["closed|not open"], "doc": "patient-handbook.pdf", "page": 1 },
+  { "q": "Which insurance plans are you in-network with?", "expect": ["Delta Dental", "Cigna", "MetLife", "Aetna"], "doc": "patient-handbook.pdf", "page": 4 },
+  { "q": "Do you accept Medicaid?", "expect": ["not accept|no,|not accepted|does not|doesn't"], "doc": "patient-handbook.pdf", "page": 4 },
+  { "q": "How much does in-clinic teeth whitening cost?", "expect": ["$450"], "doc": "price-list-2026.pdf", "page": 2 },
+  { "q": "What is the price of a porcelain crown?", "expect": ["1,100|1100"], "doc": "price-list-2026.pdf", "page": 2 },
+  { "q": "How much is a professional cleaning?", "expect": ["$120"], "doc": "price-list-2026.pdf", "page": 1 },
+  { "q": "What should I do if an adult tooth gets knocked out?", "expect": ["milk", "hour"], "doc": "patient-handbook.pdf", "page": 5 },
+  { "q": "When are the emergency appointment slots?", "expect": ["11:30", "4:00|4 PM|4pm"], "doc": "patient-handbook.pdf", "page": 5 },
+  { "q": "How much does the membership plan cost per month?", "expect": ["$29"], "doc": "patient-handbook.pdf", "page": 4 },
+  { "q": "How long do you keep adult patient records?", "expect": ["10 years|ten years"], "doc": "patient-handbook.pdf", "page": 6 },
+  { "q": "How many days of annual leave do full-time staff get?", "expect": ["20"], "doc": "staff-policy-manual.pdf", "page": 2 },
+  { "q": "How long is the probation period for new employees?", "expect": ["90"], "doc": "staff-policy-manual.pdf", "page": 1 },
+  { "q": "What is the yearly training budget for clinical staff?", "expect": ["1,500|1500"], "doc": "staff-policy-manual.pdf", "page": 3 },
+  { "q": "Do you offer dental implants?", "unanswerable": true },
+  { "q": "What is the clinic's Wi-Fi password?", "unanswerable": true },
+  { "q": "How much does Invisalign cost?", "unanswerable": true },
+  { "q": "Who won the last football World Cup?", "unanswerable": true }
+]
